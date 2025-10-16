@@ -1,7 +1,9 @@
 package br.com.rivelino.demo.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -11,10 +13,10 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private Integer id;
     private String username;
 
-    @Column(unique = true)
     private  String email;
     private String password;
     }

@@ -3,6 +3,7 @@ package br.com.rivelino.demo.services.impl;
 import br.com.rivelino.demo.domain.User;
 import br.com.rivelino.demo.repositories.UserRepository;
 import br.com.rivelino.demo.services.UserService;
+import br.com.rivelino.demo.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         Optional<User> optional = repository.findById(id);
-        return optional.orElse(null);
+        return optional.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado!"));
     }
 }

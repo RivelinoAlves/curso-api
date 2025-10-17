@@ -3,6 +3,7 @@ package br.com.rivelino.demo.services.impl;
 import br.com.rivelino.demo.domain.User;
 import br.com.rivelino.demo.domain.dto.UserDTO;
 import br.com.rivelino.demo.repositories.UserRepository;
+import br.com.rivelino.demo.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -54,6 +55,18 @@ class UserServiceImplTest {
         assertEquals(ID, response.getId());
         assertEquals(EMAIL, response.getEmail());
         assertEquals(NAME, response.getUsername());
+    }
+
+    @Test
+    void whenFindById_thenThrowUserNotFoundException() {
+        when(repository.findById(anyInt())).thenThrow(new ObjectNotFoundException("Objeto não encontrado!"));
+
+        try {
+            service.findById(ID);
+        } catch (Exception e) {
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals("Objeto não encontrado!", e.getMessage());
+        }
     }
 
     @Test

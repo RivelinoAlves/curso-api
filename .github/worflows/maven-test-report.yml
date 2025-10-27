@@ -1,0 +1,46 @@
+name: Maven Tests and HTML Report
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build and run tests (maven verify)
+        # roda até a fase 'verify' para que jacoco & surefire-report (fase verify) gerem os HTMLs
+        run: mvn -B -DskipTests=false verify
+
+      - name: List generated files (for debug)
+        run: |
+          echo "=== target listing ==="
+          ls -la target || true
+          echo "=== target/site listing ==="
+          ls -la target/site || true
+
+      - name: Upload HTML test report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: target/site

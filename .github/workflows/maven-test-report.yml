@@ -1,4 +1,4 @@
-name: Maven Tests and HTML Reports
+name: Maven Tests and Publish Reports to GitHub Pages
 
 on:
   push:
@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: write   # Necessário para publicar no branch gh-pages
+
 jobs:
-  test:
+  test-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,8 +35,15 @@ jobs:
       - name: Run tests and generate reports
         run: mvn -B clean verify
 
-      - name: Upload test reports
-        uses: actions/upload-artifact@v4
+      - name: List generated reports (debug)
+        run: ls -R target/site
+
+      # Publicar no GitHub Pages
+      - name: Deploy test reports to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: test-report
-          path: target/site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "🚀 Publicando relatórios de testes (JaCoCo + Surefire)"

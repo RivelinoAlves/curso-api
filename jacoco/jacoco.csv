@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+apiudemy,br.com.rivelino.demo,ApiudemyApplication,0,8,0,0,0,3,0,2,0,2
+apiudemy,br.com.rivelino.demo.config,LocalConfig,0,27,0,0,0,5,0,2,0,2
+apiudemy,br.com.rivelino.demo.config,ModelMapperConfig,0,7,0,0,0,2,0,2,0,2
+apiudemy,br.com.rivelino.demo.services.impl,UserServiceImpl,5,77,1,3,0,15,2,8,1,7
+apiudemy,br.com.rivelino.demo.services.exceptions,ObjectNotFoundException,0,4,0,0,0,2,0,1,0,1
+apiudemy,br.com.rivelino.demo.services.exceptions,DataIntegratyViolationException,0,4,0,0,0,2,0,1,0,1
+apiudemy,br.com.rivelino.demo.resources,UserResource,7,69,0,0,2,9,1,6,1,6
+apiudemy,br.com.rivelino.demo.resources.exceptions,ResourceEcxeptionHandler,34,3,0,0,4,1,2,1,2,1

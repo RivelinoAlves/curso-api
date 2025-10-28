@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">apiudemy</a> &gt; <a href="index.source.html" class="el_package">br.com.rivelino.demo.resources</a> &gt; <span class="el_source">UserResource.java</span></div><h1>UserResource.java</h1><pre class="source lang-java linenums">package br.com.rivelino.demo.resources;
+
+import br.com.rivelino.demo.domain.dto.UserDTO;
+import br.com.rivelino.demo.services.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(value = &quot;/user&quot;)
+<span class="fc" id="L16">public class UserResource {</span>
+
+    public static final String ID = &quot;/{id}&quot;;
+    @Autowired
+    private ModelMapper mapper;
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping(value = ID)
+    public ResponseEntity&lt;UserDTO&gt; findById(@PathVariable Integer id) {
+<span class="fc" id="L27">        return ResponseEntity.ok().body(mapper.map(userService.findById(id), UserDTO.class));</span>
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; findAll() {
+<span class="fc" id="L32">        return ResponseEntity.ok()</span>
+<span class="fc" id="L33">                .body(userService.findAll()</span>
+<span class="fc" id="L34">                        .stream().map(x -&gt; mapper.map(x, UserDTO.class)).collect(Collectors.toList()));</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;UserDTO&gt; create(@RequestBody UserDTO obj) {
+        URI uri = ServletUriComponentsBuilder
+<span class="fc" id="L40">                .fromCurrentRequest().path(ID).buildAndExpand(userService.create(obj)).toUri();</span>
+<span class="fc" id="L41">        return ResponseEntity.created(uri).build();</span>
+    }
+
+    @PutMapping(value = ID)
+    public  ResponseEntity&lt;UserDTO&gt; update(@PathVariable Integer id, @RequestBody UserDTO obj) {
+<span class="fc" id="L46">        obj.setId(id);</span>
+<span class="fc" id="L47">        return ResponseEntity.ok().body(mapper.map(userService.update(obj), UserDTO.class));</span>
+    }
+
+    @DeleteMapping(value = ID)
+    public ResponseEntity&lt;UserDTO&gt; delete(@PathVariable Integer id) {
+<span class="nc" id="L52">        userService.delete(id);</span>
+<span class="nc" id="L53">    return ResponseEntity.noContent().build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
